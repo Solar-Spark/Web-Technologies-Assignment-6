@@ -1,6 +1,10 @@
 let currentStep = 0;
 const formSteps = document.querySelectorAll(".form-step");
 
+function showLoading(show){
+    document.getElementById('loading').style.display = show ? 'flex' : 'none';
+}
+
 function showStep(index) {
     formSteps.forEach((step, i) => {
         step.classList.remove("active");
@@ -10,16 +14,25 @@ function showStep(index) {
 
 function nextStep() {
     if (validateForm(currentStep)) {
-        currentStep++;
-        if (currentStep >= formSteps.length) currentStep = formSteps.length - 1;
-        showStep(currentStep);
+        showLoading(true);  // Show loading animation
+        
+        setTimeout(() => {
+            currentStep++;
+            if (currentStep >= formSteps.length) currentStep = formSteps.length - 1;
+            showStep(currentStep);
+            showLoading(false);  // Hide loading animation
+        }, 3000);  // 3-second delay
     }
 }
-
 function previousStep() {
-    currentStep--;
-    if (currentStep < 0) currentStep = 0;
-    showStep(currentStep);
+    showLoading(true);  // Show loading animation
+    
+    setTimeout(() => {
+        currentStep--;
+        if (currentStep < 0) currentStep = 0;
+        showStep(currentStep);
+        showLoading(false);  // Hide loading animation
+    }, 3000);  // 3-second delay
 }
 
 function validateForm(stepIndex) {
